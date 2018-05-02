@@ -8,6 +8,7 @@ import Subresource from '../../../src/actions/model/Subresource';
 import Environment from '../../../src/model/Environment';
 import ChannelApeErrorResponse from '../../../src/model/ChannelApeErrorResponse';
 import Channel from '../../../src/channels/model/Channel';
+import CreateChannelRequest from '../../../src/channels/model/CreateChannelRequest';
 
 describe('Channels Service', () => {
 
@@ -119,6 +120,75 @@ describe('Channels Service', () => {
       }).catch((e) => {
         expect(clientGetStub.args[0][0]).to.equal(`/${Version.V1}${Resource.CHANNELS}/${expectedChannel.id}`);
         expectChannelApeErrorResponse(e);
+      });
+    });
+
+    it(`And valid integration id
+    When creating a channel
+    Expect channel to be created`, () => {
+      
+      const response = {
+        statusCode: 200
+      };
+      const clientGetStub: sinon.SinonStub = sandbox.stub(client, 'post')
+          .yields(null, response, expectedChannel);
+
+      const channelsService: ChannelsService = new ChannelsService(client);
+
+      const expectedCreateChannelRequest: CreateChannelRequest = {
+        businessId: '13113',
+        credentials: {
+          username: 'password'
+        },
+        name: 'Some Channel',
+        enabled: true,
+        integrationId: 'integration-id',
+        settings: {
+          allowCreate: true,
+          updateFields: [],
+          priceType: 'usd',
+          disableVariants: true,
+          allowDelete: true,
+          allowUpdate: true,
+          allowRead: true
+        }
+      };
+
+      return channelsService.create(expectedCreateChannelRequest).then((actualResponse) => {
+        expect(actualResponse.businessId).to.equal(expectedCreateChannelRequest.businessId);
+      });
+    });
+
+    it(`And valid integration id
+    And blank name
+    When creating a channel
+    Expect channel not to be created and an ChannelApeErrorResponse to be returned`, () => {
+      
+      const expectedCreateChannelRequest: CreateChannelRequest = {
+        businessId: '13113',
+        credentials: {
+          username: 'password'
+        },
+        name: '',
+        enabled: true,
+        integrationId: 'integration-id',
+        settings: {
+          allowCreate: true,
+          updateFields: [],
+          priceType: 'usd',
+          disableVariants: true,
+          allowDelete: true,
+          allowUpdate: true,
+          allowRead: true
+        }
+      };
+
+      const channelsService: ChannelsService = new ChannelsService(client);
+      return channelsService.create(expectedCreateChannelRequest).then((actualResponse) => {
+        expect(actualResponse.businessId).to.equal(expectedCreateChannelRequest.businessId);
+      })
+      .catch((e: ChannelApeErrorResponse) => {
+        expect(e.statusCode).to.equal(400);
       });
     });
 
