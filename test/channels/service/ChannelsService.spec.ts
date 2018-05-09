@@ -49,16 +49,6 @@ describe('Channels Service', () => {
       updatedAt: new Date('2018-04-02T13:04:27.299Z')
     };
 
-    const expectedChannelApeErrorResponse : ChannelApeErrorResponse = {
-      statusCode: 404,
-      errors: [
-        { 
-          code: 70, 
-          message: 'Channel could not be found for business.' 
-        }
-      ]
-    };
-
     const expectedError = {
       stack: 'oh no an error'
     };
@@ -108,6 +98,16 @@ describe('Channels Service', () => {
     'When retrieving channel Then return a rejected promise with 404 status code ' +
     'And channel not found error message', () => {
 
+      const expectedChannelApeErrorResponse : ChannelApeErrorResponse = {
+        statusCode: 404,
+        errors: [
+          { 
+            code: 70, 
+            message: 'Channel could not be found for business.' 
+          }
+        ]
+      };
+
       const response = {
         statusCode: 404
       };
@@ -119,7 +119,7 @@ describe('Channels Service', () => {
         expect(actualResponse).to.be.undefined;
       }).catch((e) => {
         expect(clientGetStub.args[0][0]).to.equal(`/${Version.V1}${Resource.CHANNELS}/${expectedChannel.id}`);
-        expectChannelApeErrorResponse(e);
+        expectChannelApeErrorResponse(e, expectedChannelApeErrorResponse);
       });
     });
 
@@ -128,7 +128,7 @@ describe('Channels Service', () => {
     Expect channel to be created`, () => {
       
       const response = {
-        statusCode: 200
+        statusCode: 201
       };
       const clientGetStub: sinon.SinonStub = sandbox.stub(client, 'post')
           .yields(null, response, expectedChannel);
@@ -155,7 +155,8 @@ describe('Channels Service', () => {
       };
 
       return channelsService.create(expectedCreateChannelRequest).then((actualResponse) => {
-        expect(actualResponse.businessId).to.equal(expectedCreateChannelRequest.businessId);
+        expectChannel(actualResponse);
+        expect(clientGetStub.args[0][0]).to.equal(`/${Version.V1}${Resource.CHANNELS}`);
       });
     });
 
@@ -164,6 +165,16 @@ describe('Channels Service', () => {
     When creating a channel
     Expect channel not to be created and an ChannelApeErrorResponse to be returned`, () => {
       
+      const expectedChannelApeErrorResponse : ChannelApeErrorResponse = {
+        statusCode: 400,
+        errors: [
+          { 
+            code: 87,
+            message: 'Channel name cannot be blank.'
+          }
+        ]
+      };
+
       const expectedCreateChannelRequest: CreateChannelRequest = {
         businessId: '13113',
         credentials: {
@@ -183,12 +194,19 @@ describe('Channels Service', () => {
         }
       };
 
+      const response = {
+        statusCode: 400
+      };
+      const clientGetStub = sandbox.stub(client, 'post')
+        .yields(null, response, expectedChannelApeErrorResponse);
+
       const channelsService: ChannelsService = new ChannelsService(client);
-      return channelsService.create(expectedCreateChannelRequest).then((actualResponse) => {
-        expect(actualResponse.businessId).to.equal(expectedCreateChannelRequest.businessId);
+      return channelsService.create(expectedCreateChannelRequest).then((actualResponse) => {  
+        throw new Error('test failed');
       })
       .catch((e: ChannelApeErrorResponse) => {
         expect(e.statusCode).to.equal(400);
+        expect(clientGetStub.args[0][0]).to.equal(`/${Version.V1}${Resource.CHANNELS}`);        
       });
     });
 
@@ -209,9 +227,9 @@ describe('Channels Service', () => {
       expect(actualChannel.updatedAt.toISOString()).to.equal(expectedChannel.updatedAt.toISOString());
     }
 
-    function expectChannelApeErrorResponse(error: any) {
+    function expectChannelApeErrorResponse(error: any, expectedChannelApeErrorResponse: ChannelApeErrorResponse) {
       const actualChannelApeErrorResponse = error as ChannelApeErrorResponse;
-      expect(actualChannelApeErrorResponse.statusCode).to.equal(404);
+      expect(actualChannelApeErrorResponse.statusCode).to.equal(expectedChannelApeErrorResponse.statusCode);
       expect(actualChannelApeErrorResponse.errors[0].code).to.equal(expectedChannelApeErrorResponse.errors[0].code);
       expect(actualChannelApeErrorResponse.errors[0].message)
         .to.equal(expectedChannelApeErrorResponse.errors[0].message);

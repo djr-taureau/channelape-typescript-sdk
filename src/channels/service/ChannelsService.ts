@@ -27,7 +27,7 @@ export default class ChannelsService {
 
     const requestUrl = `/${Version.V1}${Resource.CHANNELS}`;
     const options: request.CoreOptions = {
-      body: createChannelRequest
+      body: createChannelRequest // TODO: assert me
     };
     this.client.post(requestUrl, options, (error, response, body) => {
       this.mapPromise(deferred, error, response, body, 201);
