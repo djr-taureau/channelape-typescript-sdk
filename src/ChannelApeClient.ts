@@ -53,7 +53,7 @@ export default class ChannelApeClient {
   get Endpoint(): string {
     return this.endpoint;
   }
-  
+
   sessions(): SessionsService {
     return this.sessionsService;
   }

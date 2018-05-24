@@ -150,9 +150,9 @@ describe('ChannelApe Client', () => {
       const expectedChannelApeErrorResponse : ChannelApeErrorResponse = {
         statusCode: 404,
         errors: [
-          { 
-            code: 70, 
-            message: 'Channel could not be found for business.' 
+          {
+            code: 70,
+            message: 'Channel could not be found for business.'
           }
         ]
       };

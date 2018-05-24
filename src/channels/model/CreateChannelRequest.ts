@@ -10,4 +10,3 @@ export default interface CreateChannelRequest {
   };
   settings: ChannelSettings;
 }
-  

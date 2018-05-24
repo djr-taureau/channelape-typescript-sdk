@@ -10,8 +10,8 @@ import * as Q from 'q';
 
 export default class ChannelsService {
 
-  constructor(private readonly client: request.RequestAPI<request.Request, 
-    request.CoreOptions, request.RequiredUriUrl>) { }
+  constructor(private readonly client: request.RequestAPI<request.Request,
+        request.CoreOptions, request.RequiredUriUrl>) { }
 
   public get(channelId: string): Q.Promise<Channel> {
     const deferred = Q.defer<Channel>();
@@ -24,11 +24,8 @@ export default class ChannelsService {
 
   public create(createChannelRequest: CreateChannelRequest): Q.Promise<Channel> {
     const deferred = Q.defer<Channel>();
-
     const requestUrl = `/${Version.V1}${Resource.CHANNELS}`;
-    const options: request.CoreOptions = {
-      body: createChannelRequest // TODO: assert me
-    };
+    const options: request.CoreOptions = { body: createChannelRequest };
     this.client.post(requestUrl, options, (error, response, body) => {
       this.mapPromise(deferred, error, response, body, 201);
     });
@@ -36,7 +33,7 @@ export default class ChannelsService {
     return deferred.promise;
   }
 
-  private mapPromise(deferred: Q.Deferred<Channel>, error: any, response: request.Response, body : any, 
+  private mapPromise(deferred: Q.Deferred<Channel>, error: any, response: request.Response, body : any,
     expectedStatusCode: number) {
     if (error) {
       deferred.reject(error);

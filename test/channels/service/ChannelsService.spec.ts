@@ -101,9 +101,9 @@ describe('Channels Service', () => {
       const expectedChannelApeErrorResponse : ChannelApeErrorResponse = {
         statusCode: 404,
         errors: [
-          { 
-            code: 70, 
-            message: 'Channel could not be found for business.' 
+          {
+            code: 70,
+            message: 'Channel could not be found for business.'
           }
         ]
       };
@@ -126,7 +126,7 @@ describe('Channels Service', () => {
     it(`And valid integration id
     When creating a channel
     Expect channel to be created`, () => {
-      
+
       const response = {
         statusCode: 201
       };
@@ -157,6 +157,7 @@ describe('Channels Service', () => {
       return channelsService.create(expectedCreateChannelRequest).then((actualResponse) => {
         expectChannel(actualResponse);
         expect(clientGetStub.args[0][0]).to.equal(`/${Version.V1}${Resource.CHANNELS}`);
+        expect(clientGetStub.getCall(0).args[1].body).to.deep.equal(expectedCreateChannelRequest);
       });
     });
 
@@ -164,11 +165,11 @@ describe('Channels Service', () => {
     And blank name
     When creating a channel
     Expect channel not to be created and an ChannelApeErrorResponse to be returned`, () => {
-      
+
       const expectedChannelApeErrorResponse : ChannelApeErrorResponse = {
         statusCode: 400,
         errors: [
-          { 
+          {
             code: 87,
             message: 'Channel name cannot be blank.'
           }
@@ -201,12 +202,13 @@ describe('Channels Service', () => {
         .yields(null, response, expectedChannelApeErrorResponse);
 
       const channelsService: ChannelsService = new ChannelsService(client);
-      return channelsService.create(expectedCreateChannelRequest).then((actualResponse) => {  
+      return channelsService.create(expectedCreateChannelRequest).then((actualResponse) => {
         throw new Error('test failed');
       })
       .catch((e: ChannelApeErrorResponse) => {
         expect(e.statusCode).to.equal(400);
-        expect(clientGetStub.args[0][0]).to.equal(`/${Version.V1}${Resource.CHANNELS}`);        
+        expect(clientGetStub.args[0][0]).to.equal(`/${Version.V1}${Resource.CHANNELS}`);
+        expect(clientGetStub.getCall(0).args[1].body).to.deep.equal(expectedCreateChannelRequest);
       });
     });
 
