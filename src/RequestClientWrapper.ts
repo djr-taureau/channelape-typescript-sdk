@@ -47,6 +47,12 @@ export default class RequestClientWrapper {
     callbackOrOptionsOrUndefined?: CallbackOrOptionsOrUndefined,
     callBackOrUndefined?: request.RequestCallback | undefined
   ): void {
+    this.makeRequestWrapper('get', uriOrOptions, callbackOrOptionsOrUndefined, callBackOrUndefined);
+  }
+
+  private makeRequestWrapper(method: string, uriOrOptions: string | (request.UriOptions & request.CoreOptions),
+    callbackOrOptionsOrUndefined: CallbackOrOptionsOrUndefined,
+    callBackOrUndefined: request.RequestCallback | undefined) {
     const callStart = new Date();
     const initialCallCountForThisRequest = 0;
     this.makeRequest('get', callStart, initialCallCountForThisRequest, uriOrOptions, callbackOrOptionsOrUndefined,
@@ -71,10 +77,7 @@ export default class RequestClientWrapper {
     callbackOrOptionsOrUndefined?: CallbackOrOptionsOrUndefined,
     callBackOrUndefined?: request.RequestCallback | undefined
   ): void {
-    const callStart = new Date();
-    const initialCallCountForThisRequest = 0;
-    this.makeRequest('put', callStart, initialCallCountForThisRequest, uriOrOptions, callbackOrOptionsOrUndefined,
-      callBackOrUndefined);
+    this.makeRequestWrapper('put', uriOrOptions, callbackOrOptionsOrUndefined, callBackOrUndefined);
   }
 
   private makeRequest(
@@ -86,7 +89,7 @@ export default class RequestClientWrapper {
     callBackOrUndefined?: request.RequestCallback | undefined,
   ): void {
     this.limiter.removeTokens(1, (err, remainingRequest) => {
-      const callDetails =  { callStart, callCountForThisRequest: numberOfCalls };
+      const callDetails = { callStart, callCountForThisRequest: numberOfCalls };
       let callableRequestMethod: Function;
       try {
         callableRequestMethod = this.getCallableRequestMethod(method);
@@ -102,7 +105,7 @@ export default class RequestClientWrapper {
       this.requestLogger.logCall(method, uriOrOptions, callbackOrOptionsOrUndefined);
       if (typeof uriOrOptions === 'string') {
         if (typeof callbackOrOptionsOrUndefined === 'function') {
-          return callableRequestMethod(uriOrOptions, (error: Error , response: request.Response, body: any) => {
+          return callableRequestMethod(uriOrOptions, (error: Error, response: request.Response, body: any) => {
             this.handleResponse(error, response, body, callbackOrOptionsOrUndefined,
               uriOrOptions, undefined, callDetails);
           });
@@ -110,13 +113,13 @@ export default class RequestClientWrapper {
         return callableRequestMethod(
           uriOrOptions,
           callbackOrOptionsOrUndefined,
-          (error: Error , response: request.Response, body: any) => {
+          (error: Error, response: request.Response, body: any) => {
             this.handleResponse(error, response, body, callBackOrUndefined,
               uriOrOptions, callbackOrOptionsOrUndefined, callDetails);
           });
       }
       if (typeof callbackOrOptionsOrUndefined === 'function') {
-        return callableRequestMethod(uriOrOptions, (error: Error , response: request.Response, body: any) => {
+        return callableRequestMethod(uriOrOptions, (error: Error, response: request.Response, body: any) => {
           this.handleResponse(error, response, body, callbackOrOptionsOrUndefined,
             uriOrOptions.uri.toString(), undefined, callDetails);
         });

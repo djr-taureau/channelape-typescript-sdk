@@ -11,7 +11,7 @@ import singleOrderToUpdate from './orders/resources/singleOrderToUpdate';
 import multipleOrders from './orders/resources/multipleOrders';
 import ChannelApeApiError from '../src/model/ChannelApeApiError';
 
-const maximumRequestRetryTimeout = 3000;
+const maximumRequestRetryTimeout = 500;
 
 describe('RequestClientWrapper', () => {
 
@@ -299,37 +299,37 @@ Code: 0 Message: You didnt pass any body`;
       const clientGetStub: sinon.SinonStub = sandbox.stub(client, 'get');
       clientGetStub.onCall(0).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[0], 'Im'), 500);
+          setTimeout(() => cbOrOpts(null, responses[0], 'Im'), 1);
         } else {
-          setTimeout(() => cb(null, responses[0], 'Im'), 500);
+          setTimeout(() => cb(null, responses[0], 'Im'), 1);
         }
       });
       clientGetStub.onCall(1).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[1], 'a'), 500);
+          setTimeout(() => cbOrOpts(null, responses[1], 'a'), 1);
         } else {
-          setTimeout(() => cb(null, responses[1], 'a'), 500);
+          setTimeout(() => cb(null, responses[1], 'a'), 1);
         }
       });
       clientGetStub.onCall(2).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[2], 'little'), 500);
+          setTimeout(() => cbOrOpts(null, responses[2], 'little'), 1);
         } else {
-          setTimeout(() => cb(null, responses[2], 'little'), 500);
+          setTimeout(() => cb(null, responses[2], 'little'), 1);
         }
       });
       clientGetStub.onCall(3).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[3], 'teapot'), 500);
+          setTimeout(() => cbOrOpts(null, responses[3], 'teapot'), 1);
         } else {
-          setTimeout(() => cb(null, responses[3], 'teapot'), 500);
+          setTimeout(() => cb(null, responses[3], 'teapot'), 1);
         }
       });
       clientGetStub.onCall(4).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[4], singleOrder), 500);
+          setTimeout(() => cbOrOpts(null, responses[4], singleOrder), 1);
         } else {
-          setTimeout(() => cb(null, responses[4], singleOrder), 500);
+          setTimeout(() => cb(null, responses[4], singleOrder), 1);
         }
       });
 
@@ -428,37 +428,37 @@ Code: 0 Message: You didnt pass any body`;
       const clientGetStub: sinon.SinonStub = sandbox.stub(client, 'get');
       clientGetStub.onCall(0).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[0], 'Im'), 1000);
+          setTimeout(() => cbOrOpts(null, responses[0], 'Im'), 250);
         } else {
-          setTimeout(() => cb(null, responses[0], 'Im'), 1000);
+          setTimeout(() => cb(null, responses[0], 'Im'), 250);
         }
       });
       clientGetStub.onCall(1).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[1], 'a'), 1000);
+          setTimeout(() => cbOrOpts(null, responses[1], 'a'), 250);
         } else {
-          setTimeout(() => cb(null, responses[1], 'a'), 1000);
+          setTimeout(() => cb(null, responses[1], 'a'), 250);
         }
       });
       clientGetStub.onCall(2).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[2], 'little'), 1000);
+          setTimeout(() => cbOrOpts(null, responses[2], 'little'), 250);
         } else {
-          setTimeout(() => cb(null, responses[2], 'little'), 1000);
+          setTimeout(() => cb(null, responses[2], 'little'), 250);
         }
       });
       clientGetStub.onCall(3).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[3], 'teapot'), 1000);
+          setTimeout(() => cbOrOpts(null, responses[3], 'teapot'), 250);
         } else {
-          setTimeout(() => cb(null, responses[3], 'teapot'), 1000);
+          setTimeout(() => cb(null, responses[3], 'teapot'), 250);
         }
       });
       clientGetStub.onCall(4).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[4], singleOrder), 1000);
+          setTimeout(() => cbOrOpts(null, responses[4], singleOrder), 250);
         } else {
-          setTimeout(() => cb(null, responses[4], singleOrder), 1000);
+          setTimeout(() => cb(null, responses[4], singleOrder), 250);
         }
       });
 
@@ -507,37 +507,37 @@ Code: 0 Message: You didnt pass any body`;
       const clientGetStub: sinon.SinonStub = sandbox.stub(client, 'get');
       clientGetStub.onCall(0).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[0], 'Im'), 1000);
+          setTimeout(() => cbOrOpts(null, responses[0], 'Im'), 250);
         } else {
-          setTimeout(() => cb(null, responses[0], 'Im'), 1000);
+          setTimeout(() => cb(null, responses[0], 'Im'), 250);
         }
       });
       clientGetStub.onCall(1).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[1], 'a'), 1000);
+          setTimeout(() => cbOrOpts(null, responses[1], 'a'), 250);
         } else {
-          setTimeout(() => cb(null, responses[1], 'a'), 1000);
+          setTimeout(() => cb(null, responses[1], 'a'), 250);
         }
       });
       clientGetStub.onCall(2).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[2], 'little'), 1000);
+          setTimeout(() => cbOrOpts(null, responses[2], 'little'), 250);
         } else {
-          setTimeout(() => cb(null, responses[2], 'little'), 1000);
+          setTimeout(() => cb(null, responses[2], 'little'), 250);
         }
       });
       clientGetStub.onCall(3).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[3], 'teapot'), 1000);
+          setTimeout(() => cbOrOpts(null, responses[3], 'teapot'), 250);
         } else {
-          setTimeout(() => cb(null, responses[3], 'teapot'), 1000);
+          setTimeout(() => cb(null, responses[3], 'teapot'), 250);
         }
       });
       clientGetStub.onCall(4).callsFake((uriOrOptions: any, cbOrOpts: any, cb: any) => {
         if (typeof cbOrOpts === 'function') {
-          setTimeout(() => cbOrOpts(null, responses[4], singleOrder), 1000);
+          setTimeout(() => cbOrOpts(null, responses[4], singleOrder), 250);
         } else {
-          setTimeout(() => cb(null, responses[4], singleOrder), 1000);
+          setTimeout(() => cb(null, responses[4], singleOrder), 250);
         }
       });
 
