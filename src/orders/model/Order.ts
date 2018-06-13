@@ -6,7 +6,7 @@ import Customer from './Customer';
 
 export default interface Order {
   additionalFields?: AdditionalField[];
-  readonly id: string;
+  id: string;
   channelOrderId: string;
   channelId: string;
   businessId: string;
